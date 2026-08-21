@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #000;
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* ניהול עמודים */
+.page {
+    display: none;
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px;
+}
+
+.page.active {
+    display: block;
+}
+
+/* סגנון כפתורים מפיגמה (איורי עם קו מתאר) */
+.pill-btn, .action-btn, .tab-btn, .sub-btn {
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+    box-shadow: 0px 2px 0px #000;
+}
+
+.pill-btn:hover, .action-btn:hover, .tab-btn:hover, .sub-btn:hover {
+    background-color: #fffae6;
+    transform: translateY(-1px);
+}
+
+.pill-btn:active, .action-btn:active, .tab-btn.active, .sub-btn.active {
+    background-color: #f1c40f; /* הצהוב מהפיגמה */
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* כפתור קרדיטים צף */
+.top-credits {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+/* --- דף פתיחה --- */
+.main-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.main-container h1 { font-size: 2.2rem; margin-bottom: 5px; }
+.main-container h2 { font-size: 1.4rem; font-weight: 400; margin-bottom: 20px; }
+.main-container .subtitle { font-size: 1.1rem; line-height: 1.6; margin-bottom: 40px; }
+
+.main-nav-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.nav-card {
+    border: 2px solid #000;
+    border-radius: 20px;
+    padding: 20px;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #fff;
+    box-shadow: 0 4px 0 #000;
+}
+
+.nav-card:hover { background-color: #fffae6; }
+
+/* --- דף עורך (Editor) --- */
+.editor-layout {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.canvas-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.canvas-wrapper {
+    border: 2.5px solid #000;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.editor-bottom-bar {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.tools-section {
+    width: 380px;
+    border: 2px solid #000;
+    border-radius: 20px;
+    padding: 15px;
+    background: #fff;
+    min-height: 520px;
+}
+
+.main-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.sub-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.sub-btn { font-size: 13px; padding: 4px 10px; }
+
+.assets-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+.asset-item {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border: 2px solid #000;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.asset-item:hover { border-color: #f1c40f; }
+
+/* בקרות טקסט */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.text-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.styled-input, .styled-select {
+    padding: 10px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+/* --- פופאפ קרדיטים --- */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 25px;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+    max-width: 400px;
+    width: 90%;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px; left: 15px;
+    font-size: 24px; cursor: pointer;
+}
+
+.highlight-red { color: #e74c3c; margin-top: 8px; font-weight: 600; }/* --- ייבוא פונטים מותאמים אישית (יש לשמור את קבצי הפונט בתיקיית assets/fonts) --- */
+@font-face {
+    font-family: 'Gveret Levin';
+    src: url('assets/fonts/gveret-levin.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'stam';
+    src: url('assets/fonts/stamsefaradclm-webfont.ttf') format('truetype');
+}
+
+/* --- עיצוב קרוסלת הסטטיסטיקה והחיצים --- */
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.chart-wrapper {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 25px;
+    padding: 20px;
+    width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 0 #000;
+}
+
+.arrow-btn {
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    box-shadow: 0 4px 0 #000;
+}
+
+.arrow-btn:active {
+    transform: translateY(4px);
+    box-shadow: none;
+    background-color: #f1c40f;
+}
+
+/* --- עיצוב פופאפ הברכה הממוצעת --- */
+.average-modal-content {
+    max-width: 600px;
+}
+
+.average-modal-content .modal-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.average-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border: 2px solid #000;
+    border-radius: 12px;
+}
+/* --- מיקום כפתור החזרה ליד כפתור הקרדיטים (למעלה) --- */
+.top-back-btn {
+    position: absolute;
+    top: 20px;
+    right: 140px; /* מזיז אותו הצידה כדי שלא יעלה על כפתור קרדיטים */
+    z-index: 10;
+}
+
+/* --- הגדלת הרווח בין הכפתורים בדף המחקר --- */
+.main-nav-cards.wide-gap {
+    gap: 60px; /* את יכולה להגדיל/להקטין את המספר הזה כדי לשלוט ברווח */
+    margin-top: 20px;
+}
+
+/* --- מרכוז טקסט כללי --- */
+.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.text-center h2, .text-center p, .text-center span {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* --- עיצוב טקסט ההסבר בדף המחקר --- */
+.research-container .subtitle {
+    line-height: 1.6; /* כאן את משנה את הרווח בין השורות */
+    font-size: 1.1rem; /* גודל הכתב, מוזמנת לשנות אם צריך */
+    margin-bottom: 30px;
+    max-width: 600px; /* שומר על אורך שורה קריא */
+}
+/* --- רווח מתחת לכותרת בדף המחקר --- */
+.research-container h2 {
+    margin-bottom: 25px; /* שולט בגודל הרווח בין הכותרת לטקסט */
+}
+/* --- עיצוב הלוגו בדף הראשי --- */
+.main-logo {
+    width: 550px; /* זה בערך הרוחב של הכותרת הקודמת. את יכולה להגדיל או להקטין את המספר הזה כדי שזה ישב בול! */
+    max-width: 100%; /* מוודא שהלוגו לא יחרוג מהמסך בטלפונים */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px; /* הרווח בין הלוגו לשם שלך שמופיע מתחתיו */
+}

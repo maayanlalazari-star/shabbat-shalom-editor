@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אדיטור ברכות לווטצאפ</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fabric.js לעריכה גרפית -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <!-- Chart.js להצגת תרשימים בדף המחקר -->
+</head>
+
+<body>
+
+    <!-- כפתור קרדיטים עליון -->
+    <button id="credits-btn" class="pill-btn top-credits">קרדיטים</button>
+
+    <!-- ===== 1. דף פתיחה ===== -->
+    <section id="main-page" class="page active">
+        <div class="main-container">
+            <img src="assets/logo.png" alt="לוגו אדיטור ברכות" class="main-logo">
+            <h2>מעין לאלזארי</h2>
+            <p class="subtitle">
+                אתר זה מבוסס על מחקר קצר בנושא ברכות Whatsapp במסגרת קורס "מחקר וידאוגרפי",
+                מוזמנים להכין ברכה לסבתא ולהפתיע אותה בשישי!
+            </p>
+
+            <div class="main-nav-cards">
+                <div class="nav-card" onclick="navigateTo('research-page')">
+                    <div class="card-icon research-icon"></div>
+                    <span>מחקר</span>
+                </div>
+                <div class="nav-card" onclick="navigateTo('editor-page')">
+                    <div class="card-icon editor-icon"></div>
+                    <span>אדיטור</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 2. דף האדיטור ===== -->
+    <section id="editor-page" class="page">
+        <div class="editor-layout">
+
+            <!-- אזור הקנווס והכפתורים התחתונים -->
+            <div class="canvas-section">
+                <div class="canvas-wrapper">
+                    <canvas id="greeting-canvas" width="500" height="500"></canvas>
+                </div>
+                <div class="editor-bottom-bar">
+                    <button class="action-btn" onclick="navigateTo('main-page')">עמוד הבית</button>
+                    <button class="action-btn primary" onclick="downloadImage()">הורדה ⬇</button>
+                    <button class="action-btn" onclick="undoCanvas()">חזרה</button>
+                </div>
+            </div>
+
+            <!-- סרגל הכלים והקטגוריות (מימין) -->
+            <div class="tools-section">
+                <!-- קטגוריות ראשיות -->
+                <div class="main-tabs">
+                    <button class="tab-btn active" onclick="switchTab('backgrounds')">רקע</button>
+                    <button class="tab-btn" onclick="switchTab('text')">טקסט</button>
+                    <button class="tab-btn" onclick="switchTab('stickers')">מדבקות</button>
+                    <button class="tab-btn" onclick="switchTab('signature')">חתימה</button>
+                </div>
+
+                <!-- תוכן לשונית רקע -->
+                <div id="tab-backgrounds" class="tab-content active">
+                    <div class="sub-categories">
+                        <button class="sub-btn active" onclick="filterAssets('bg', 'flowers', this)">פרחים</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'religion', this)">דת ומסורת</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'hearts', this)">לבבות</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'sea', this)">ים</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'israel', this)">ישראל</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'vintage', this)">איגרות של פעם</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'women-children', this)">נשים
+                            וילדים</button>
+                        <button class="sub-btn" onclick="filterAssets('bg', 'other', this)">אחר</button>
+                    </div>
+                    <div class="assets-grid" id="bg-grid">
+                        <!-- תמונות יוטענו דינמית -->
+                    </div>
+                </div>
+
+                <!-- תוכן לשונית טקסט -->
+                <div id="tab-text" class="tab-content">
+                    <div class="text-controls">
+                        <input type="text" id="text-input" placeholder="הקלידי טקסט כאן..." class="styled-input">
+
+                        <label>פונט:</label>
+                        <select id="font-family" class="styled-select">
+                            <option value="Arial">אריאל</option>
+                            <option value="'Gveret Levin'">כתב יד (גברת לוין)</option>
+                            <option value="Frank Ruhl Libre">סריפי</option>
+                            <option value="'stam'">מסורתי (סת"ם)</option>
+                        </select>
+
+                        <div class="color-pickers">
+                            <label>צבע כתב: <input type="color" id="text-color" value="#000000"></label>
+                            <label>קו מתאר: <input type="color" id="stroke-color" value="#ffffff"></label>
+                        </div>
+
+                        <button class="action-btn primary" onclick="addTextToCanvas()">הוסף טקסט</button>
+                    </div>
+                </div>
+
+                <!-- תוכן לשונית מדבקות -->
+                <div id="tab-stickers" class="tab-content">
+                    <div class="sub-categories">
+                        <button class="sub-btn active" onclick="filterAssets('sticker', 'flowers', this)">פרחים</button>
+                        <button class="sub-btn" onclick="filterAssets('sticker', 'hearts', this)">לבבות</button>
+                        <button class="sub-btn" onclick="filterAssets('sticker', 'religion', this)">דת</button>
+                        <button class="sub-btn" onclick="filterAssets('sticker', 'glitter', this)">נצנצים</button>
+                        <button class="sub-btn" onclick="filterAssets('sticker', 'israel', this)">ישראל</button>
+                    </div>
+                    <div class="assets-grid" id="sticker-grid">
+                        <!-- מדבקות יוטענו דינמית -->
+                    </div>
+                </div>
+
+                <!-- תוכן לשונית חתימה -->
+                <div id="tab-signature" class="tab-content">
+                    <div class="text-controls">
+                        <input type="text" id="signature-input" placeholder="הקלידי את שמך..." class="styled-input">
+                        <button class="action-btn primary" onclick="addSignature()">הוסף חתימה</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 3. דף המחקר ===== -->
+    <section id="research-page" class="page">
+        <!-- כפתור החזרה עכשיו מקבל מחלקה חדשה שתשים אותו למעלה -->
+        <button class="action-btn top-back-btn" onclick="navigateTo('main-page')">חזרה לבית</button>
+
+        <div class="research-container text-center">
+            <h2>דף המחקר</h2>
+            <p class="subtitle">
+               אילו מאפיינים ויזואליים מרכיבים את ברכות הוואטסאפ שכולנו מכירים? המחקר מציג ניתוח חזותי של 292 ברכות, ובוחן את הסטטיסטיקה מאחורי בחירת הצבעים, הנושאים, הטקסט והאלמנטים הגרפיים.
+            </p>
+
+            <div class="main-nav-cards wide-gap">
+                <!-- שמתי את סטטיסטיקה ראשון כדי שיופיע מימין -->
+                <div class="nav-card" onclick="navigateTo('statistics-page')">
+                    <div class="card-icon editor-icon"></div>
+                    <span>סטטיסטיקה</span>
+                </div>
+                <!-- והברכה הממוצעת שני כדי שיופיע משמאל -->
+                <div class="nav-card" onclick="openAverageModal()">
+                    <div class="card-icon research-icon"></div>
+                    <span>הברכה הממוצעת</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. דף סטטיסטיקה ===== -->
+    <section id="statistics-page" class="page">
+        <!-- גם כאן כפתור החזרה עולה למעלה -->
+        <button class="action-btn top-back-btn" onclick="navigateTo('research-page')">חזרה לדף המחקר</button>
+
+        <div class="research-container text-center">
+            <div class="carousel-container">
+                <!-- החץ הימני (פונה ימינה הרחק מהריבוע) -->
+                <button class="arrow-btn" onclick="prevDiagram()">&#9654;</button>
+
+                <div class="chart-wrapper">
+                    <img id="diagram-img" src="" alt="תרשים סטטיסטיקה"
+                        style="width: 100%; height: auto; border-radius: 12px;">
+                </div>
+
+                <!-- החץ השמאלי (פונה שמאלה הרחק מהריבוע) -->
+                <button class="arrow-btn" onclick="nextDiagram()">&#9664;</button>
+            </div>
+        </div>
+    </section>
+    <!-- ===== פופאפ: הברכה הממוצעת ===== -->
+    <div id="average-modal" class="modal">
+        <div class="modal-content average-modal-content">
+            <span class="close-btn" onclick="closeAverageModal()">&times;</span>
+            <p class="modal-title">כך נראית ברכה ממוצעת שנבנתה על פי תוצאות הניתוח הסטטיסטי </p>
+            <!-- כאן תשימי את הנתיב לתמונה שלך בתיקיית assets -->
+            <img src="assets/average-greeting.png" alt="הברכה הממוצעת" class="average-img" id="average-greeting-image">
+        </div>
+    </div>
+
+    <!-- ===== 4. פופאפ קרדיטים ===== -->
+    <div id="credits-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCredits()">&times;</span>
+            <h2>קרדיטים</h2>
+            <p>הנחייה - תומר נחושתן</p>
+            <p>סיוע בבניית אתר - בר לאלזארי</p>
+            <p>סיוע בפיתוח וקוד - Gemini (Google AI)</p>
+            <p>תמונות הרקע והמדבקות נלקחו מאתר Pixabay</p>
+            <p>גלויות ברכה ישנות - מהאתר "נוסטלגיה אונליין", "הארכיון הציוני המרכזי" ו"מוזיאון העם היהודי"</p>
+            <p>פונט סת"ם - Yoram Gnat</p>
+            <p>תרומה למאגר הברכות - שירה קמחי, לינה תמם, נעמה בן שלום</p>
+             <p>תודה מיוחדת - סבתא יפה</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
